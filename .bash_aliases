@@ -1,4 +1,4 @@
-alias vpn='sudo /usr/sbin/openvpn /home/kali/Downloads/ovpn/OS-92821-PWK.ovpn'
+alias vpn='sudo /usr/sbin/openvpn /home/kali/Downloads/vpn.ovpn'
 alias help='cat /scripts/usefullcommands'
 alias http='sudo python3 -m http.server 80'
 alias explore='sudo nautilus .'
