@@ -4,10 +4,9 @@
 #         1)  FoxyProxy
 #         2)  cookie editor
 #         3)  wappalyzer 
-#
-#
 
-# Create useful directorys
+
+# Create useful directories
 mkdir ~/scripts
 mkdir ~/git
 mkdir /opt/privesc
@@ -157,7 +156,7 @@ git clone https://github.com/m8r0wn/nullinux.git
 
 #Install OpenVPN
 
-apt-get install -y network-manager-openvpn \
+sudo apt install -y network-manager-openvpn \
 network-manager-openvpn-gnome \
 network-manager-pptp \
 network-manager-pptp-gnome \
